@@ -21,6 +21,7 @@ class UserListCreateView(APIView):
 
 
 class UserRetrieveUpdateDestroyView(APIView):
+
     def get(self, *args, **kwargs):
         pk = kwargs['pk']
         try:
@@ -36,7 +37,7 @@ class UserRetrieveUpdateDestroyView(APIView):
         except UserModel.DoesNotExist:
             return Response(f'User with id {pk} does not exist', status=status.HTTP_404_NOT_FOUND)
         data = self.request.data
-        for k,v in data.items():
+        for k, v in data.items():
             setattr(user, k, v)
         user.save()
         return Response(model_to_dict(user), status=status.HTTP_200_OK)
