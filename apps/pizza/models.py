@@ -2,6 +2,8 @@ from django.db import models
 
 from core.models import BaseModel
 
+from apps.pizza_shop.models import PizzaShopModel
+
 
 class PizzaModel(BaseModel):
     class Meta:
@@ -9,5 +11,7 @@ class PizzaModel(BaseModel):
     name = models.CharField(max_length=20)
     size = models.IntegerField()
     price = models.FloatField()
+
+    pizza_shop = models.ForeignKey(PizzaShopModel, on_delete=models.CASCADE, related_name='pizzas')
 
 
