@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')==True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
+AUTH_USER_MODEL = 'user.UserModel'
 
 # Application definition
 
@@ -38,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django_filters',
+    'rest_framework_simplejwt',
 
     # my apps:
     'core',
+    'apps.user',
+    'apps.auth',
     'apps.pizza',
     'apps.pizza_shop',
 ]

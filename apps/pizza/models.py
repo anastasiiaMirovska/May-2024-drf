@@ -4,6 +4,7 @@ from django.db import models
 from core.enums.regex_enum import RegexEnum
 from core.models import BaseModel
 
+from apps.pizza.managers import PizzaManager
 from apps.pizza_shop.models import PizzaShopModel
 
 
@@ -28,4 +29,5 @@ class PizzaModel(BaseModel):
 
     pizza_shop = models.ForeignKey(PizzaShopModel, on_delete=models.CASCADE, related_name='pizzas')
 
+    objects = PizzaManager()
 
