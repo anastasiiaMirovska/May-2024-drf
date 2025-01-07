@@ -1,8 +1,12 @@
+import os
+
 from django.contrib.auth import get_user_model
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateAPIView, UpdateAPIView
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 from apps.user.serializers import UserSerializer
@@ -14,6 +18,7 @@ UserModel = get_user_model() # Робиться для того, щоб можн
 class UserListCreateView(ListCreateAPIView):
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
     
 class UserToAdminView(GenericAPIView):
@@ -59,4 +64,18 @@ class UnBlockUserView(GenericAPIView):
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class SendEmailTestView(GenericAPIView):
+    permission_classes = [AllowAny,]
+    def get(self, *args, **kwargs):
+        template = get_template('test_email.html')
+        html_content = template.render({'name': 'DJANGO'})
+        msg = EmailMultiAlternatives(
+            subject='Test email',
+            from_email=os.environ.get('EMAIL_HOST_USER'),
+            to=['anastasiia.mirovska@gmail.com'],
+        )
+        msg.attach_alternative(html_content, 'text/html')
+        msg.send()
+        return Response({'message': 'Email sent!'}, status=status.HTTP_200_OK)
 
