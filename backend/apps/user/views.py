@@ -9,6 +9,8 @@ from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveU
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
+from core.services.email_service import EmailService
+
 from apps.user.serializers import UserSerializer
 
 UserModel = get_user_model() # Робиться для того, щоб можна було використовувати не тільки стандартну модель, а і кастомну
@@ -64,18 +66,20 @@ class UnBlockUserView(GenericAPIView):
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+#
+# class SendEmailTestView(GenericAPIView):
+#     permission_classes = [AllowAny,]
+#     def get(self, *args, **kwargs):
+#         template = get_template('test_email.html')
+#         html_content = template.render({'name': 'DJANGO'})
+#         msg = EmailMultiAlternatives(
+#             subject='Test email',
+#             from_email=os.environ.get('EMAIL_HOST_USER'),
+#             to=['anastasiia.mirovska@gmail.com'],
+#         )
+#         msg.attach_alternative(html_content, 'text/html')
+#         msg.send()
+#         return Response({'message': 'Email sent!'}, status=status.HTTP_200_OK)
 
-class SendEmailTestView(GenericAPIView):
-    permission_classes = [AllowAny,]
-    def get(self, *args, **kwargs):
-        template = get_template('test_email.html')
-        html_content = template.render({'name': 'DJANGO'})
-        msg = EmailMultiAlternatives(
-            subject='Test email',
-            from_email=os.environ.get('EMAIL_HOST_USER'),
-            to=['anastasiia.mirovska@gmail.com'],
-        )
-        msg.attach_alternative(html_content, 'text/html')
-        msg.send()
-        return Response({'message': 'Email sent!'}, status=status.HTTP_200_OK)
+
 

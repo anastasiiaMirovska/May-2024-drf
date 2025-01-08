@@ -20,6 +20,9 @@ class ActivateToken(ActionToken):
     token_type = ActionTokenEnum.ACTIVATE.token_type
     lifetime = ActionTokenEnum.ACTIVATE.lifetime
 
+class RecoveryToken(ActionToken):
+    token_type = ActionTokenEnum.RECOVER.token_type
+    lifetime = ActionTokenEnum.RECOVER.lifetime
 
 class JWTService:
     @staticmethod
@@ -37,3 +40,5 @@ class JWTService:
         token_res.blacklist()  # Додає токен до чорного списку
         user_id = token_res.payload.get('user_id')  # Отримує ID користувача з токена
         return get_object_or_404(UserModel, pk=user_id)  # Повертає об'єкт користувача
+
+
