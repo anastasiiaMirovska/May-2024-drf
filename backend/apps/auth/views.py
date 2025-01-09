@@ -3,11 +3,11 @@ from django.db.migrations import serializer
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, get_object_or_404
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from core.services.email_service import EmailService
-from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
+from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken, SocketToken
 
 from apps.auth.serializers import EmailSerializer, PasswordSerializer
 from apps.user.serializers import UserSerializer
@@ -51,3 +51,9 @@ class RecoveryPasswordView(GenericAPIView):
         return Response(user_serializer.data, status=status.HTTP_200_OK)
 
 
+class SocketTokenView(GenericAPIView):
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, *args, **kwargs):
+        token = JWTService.create_token(self.request.user, SocketToken)
+        return Response({'token': str(token)}, status=status.HTTP_200_OK)
