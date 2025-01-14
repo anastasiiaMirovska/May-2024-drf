@@ -31,7 +31,6 @@ class ChatConsumer(GenericAsyncAPIConsumer):
         )
 
     async def sender(self, data):
-        print(data)
         await self.send_json(data)
 
     @action()
