@@ -66,8 +66,8 @@ class ChatConsumer(GenericAsyncAPIConsumer):
             {
                 'type': 'sender',
                 'message': data['text'],
-                'user': self.user_name,
-                'id':request_id
+                'user': f'{self.scope['user'].id}_{self.user_name}',
+                'id': request_id
             }
         )
 
@@ -75,7 +75,7 @@ class ChatConsumer(GenericAsyncAPIConsumer):
     async def send_private_message(self, data, request_id, action):
         print(data)
         self.private_room_name = f'user_{data['userId']}'
-        private_room, is_created = await ChatRoomModel.objects.aget_or_create(name=self.private_room_name, is_privat=True)
+        private_room, is_created = await ChatRoomModel.objects.aget_or_create(name=self.private_room_name, is_private=True)
         await private_room.users.aadd(await UserModel.objects.aget(pk=data['userId']), self.scope['user'])
         await ChatMessageModel.objects.acreate(room=private_room, user=self.scope['user'], text=data['text'])
         print(f'user_{data['userId']}', '((((((((((((((((((((((((((((((((((((')
@@ -88,7 +88,7 @@ class ChatConsumer(GenericAsyncAPIConsumer):
             {
                 'type': 'sender',
                 'message': data['text'],
-                'user': self.user_name,
+                'user': f'{self.scope['user'].id}_{self.user_name}',
                 'id': request_id
             }
         )
