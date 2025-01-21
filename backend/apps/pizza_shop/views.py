@@ -1,4 +1,4 @@
-from django.shortcuts import render
+
 
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListCreateAPIView
@@ -10,6 +10,12 @@ from apps.pizza_shop.serializers import PizzaShopSerializer
 
 
 class PizzaShopListCreateView(ListCreateAPIView):
+    """
+    get:
+    List all Pizza
+    post:
+    Create a new Pizza
+    """
     serializer_class = PizzaShopSerializer
     queryset = PizzaShopModel.objects.all()
 

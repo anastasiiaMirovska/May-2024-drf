@@ -38,6 +38,9 @@ class UserToAdminView(GenericAPIView):
 class BlockUserView(GenericAPIView):
     permission_classes = [IsAdminUser,]
 
+    def get_serializer(self):
+        return None
+
     def get_queryset(self):
         return UserModel.objects.exclude(id=self.request.user.id)
 
@@ -52,6 +55,9 @@ class BlockUserView(GenericAPIView):
 
 class UnBlockUserView(GenericAPIView):
     permission_classes = [IsAdminUser,]
+
+    def get_serializer(self):
+        return None
 
     def get_queryset(self):
         return UserModel.objects.exclude(id=self.request.user.id)
